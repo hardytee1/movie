@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Your custom CSS styles */
+    /* Define a CSS rule to make the title larger */
+    p {
+      font-size: 24px; /* You can adjust the font size as needed */
+    }
+
+    img {
+      height: 150px;
+      width: 200px;
+      margin-left: 20px;
+    }
+
+    .genre {
+      font-size: 20px;
+      color: darkblue;
+    }
+
+    .awards {
+      font-size: 30px;
+    }
+
+    body {
+      background-color: lightblue; /* Set the background color as needed */
+      padding: 10px; /* Add some padding for spacing */
+      margin-bottom: 10px; /* Add margin to separate movie containers */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row" id="movieList"></div>
+  </div>
+
+  <script>
+    // Use the fetch API to retrieve the JSON data
+    fetch('Film.json')
+      .then(response => response.json())
+      .then(movies => {
+        let movieList = document.getElementById('movieList');
+
+        movies.forEach(movie => {
+          let movieDiv = document.createElement('div');
+          movieDiv.classList.add('col-md-4', 'mb-4');
+
+          let title = document.createElement('p');
+          title.innerHTML = movie.Title;
+          title.classList.add('font-weight-bold'); // Make the title bold
+          movieDiv.appendChild(title);
+
+          // Display the movie's genre information
+          let genre = document.createElement('p');
+          genre.innerHTML = 'Genre: ' + movie.Genre;
+          genre.classList.add('genre');
+          movieDiv.appendChild(genre);
+
+          let awards = document.createElement('p');
+          awards.innerHTML = 'Awards: ' + movie.Awards;
+          awards.classList.add('awards');
+          movieDiv.appendChild(awards);
+
+          // Display the movie poster images (if available)
+          if (movie.Images && movie.Images.length > 0) {
+            movie.Images.forEach(imageURL => {
+              let image = document.createElement('img');
+              image.src = imageURL;
+              image.classList.add('img-fluid', 'mb-2');
+              movieDiv.appendChild(image);
+            });
+          }
+
+          movieList.appendChild(movieDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching data: ', error));
+  </script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
